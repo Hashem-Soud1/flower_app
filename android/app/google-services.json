@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "287861806886",
+    "project_id": "flutter-project-b83e9",
+    "storage_bucket": "flutter-project-b83e9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:287861806886:android:64ba0e800126cb9fb713e7",
+        "android_client_info": {
+          "package_name": "com.example.flower_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABubxxn7xcLCPmqRKphsFDsiJ7PKcLBFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
