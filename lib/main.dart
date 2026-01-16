@@ -28,7 +28,27 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.green,
-          scaffoldBackgroundColor: Colors.grey[100],
+          scaffoldBackgroundColor: const Color(0xFFF5F7F5),
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.white,
+            elevation: 0.5,
+            foregroundColor: Colors.black,
+            centerTitle: true,
+            titleTextStyle: TextStyle(
+              color: Color(0xFF1B5E20),
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              elevation: 0,
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
         ),
         home: const AuthWrapper(),
       ),

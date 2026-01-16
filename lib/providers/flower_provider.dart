@@ -75,4 +75,13 @@ class FlowerProvider with ChangeNotifier {
     isLoading = false;
     notifyListeners();
   }
+
+  Future<void> deleteOrder(String orderId, String? userId, bool isAdmin) async {
+    await FirebaseFirestore.instance.collection('orders').doc(orderId).delete();
+    if (isAdmin) {
+      await fetchAdminOrders();
+    } else if (userId != null) {
+      await fetchUserOrders(userId);
+    }
+  }
 }

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../models/flower.dart';
 import '../models/order_model.dart';
 import '../providers/flower_provider.dart';
+import '../providers/auth_provider.dart';
 
 class OrderList extends StatelessWidget {
   final List<OrderModel> orders;
@@ -60,12 +61,59 @@ class OrderList extends StatelessWidget {
             "${DateFormat.yMMMd().format(order.orderDate)} • \$${order.totalPrice.toStringAsFixed(2)}",
             style: const TextStyle(color: Colors.grey),
           ),
-          trailing: isAdminView
-              ? Text(
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (isAdminView)
+                Text(
                   order.userEmail.split('@').first,
                   style: const TextStyle(color: Colors.grey),
-                )
-              : null,
+                ),
+              IconButton(
+                icon: const Icon(Icons.delete_outline, color: Colors.red),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                      title: const Text("Delete Order"),
+                      content: const Text(
+                        "Are you sure you want to delete this order?",
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(ctx),
+                          child: const Text("Cancel"),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            final auth = Provider.of<AuthProvider>(
+                              context,
+                              listen: false,
+                            );
+                            Navigator.pop(ctx);
+                            await flowerProvider.deleteOrder(
+                              order.orderId,
+                              auth.user?.uid,
+                              isAdminView,
+                            );
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text("Order deleted")),
+                              );
+                            }
+                          },
+                          child: const Text(
+                            "Delete",
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         );
       },
     );
