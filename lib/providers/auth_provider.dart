@@ -6,6 +6,8 @@ class AuthProvider with ChangeNotifier {
   User? user;
   String role = 'user';
   String name = 'User';
+  String phone = '';
+  String city = '';
 
   bool get isAdmin => role == 'admin';
 
@@ -28,6 +30,8 @@ class AuthProvider with ChangeNotifier {
     if (doc.exists) {
       role = doc.data()?['role'] ?? 'user';
       name = doc.data()?['name'] ?? 'User';
+      phone = doc.data()?['phone'] ?? '';
+      city = doc.data()?['city'] ?? '';
       notifyListeners();
     }
   }
@@ -50,6 +54,8 @@ class AuthProvider with ChangeNotifier {
             'email': email,
             'name': nameInput,
             'role': 'user',
+            'phone': '',
+            'city': '',
           });
       return null;
     } catch (e) {
@@ -74,6 +80,22 @@ class AuthProvider with ChangeNotifier {
       'name': newName,
     });
     name = newName;
+    notifyListeners();
+  }
+
+  Future<void> updatePhone(String newPhone) async {
+    await FirebaseFirestore.instance.collection('users').doc(user!.uid).update({
+      'phone': newPhone,
+    });
+    phone = newPhone;
+    notifyListeners();
+  }
+
+  Future<void> updateCity(String newCity) async {
+    await FirebaseFirestore.instance.collection('users').doc(user!.uid).update({
+      'city': newCity,
+    });
+    city = newCity;
     notifyListeners();
   }
 

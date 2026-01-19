@@ -2,43 +2,28 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/flower.dart';
-import '../models/order_model.dart';
 import '../providers/auth_provider.dart';
-import '../providers/flower_provider.dart';
+import 'order_confirmation_screen.dart';
 
 class DetailsScreen extends StatelessWidget {
   final Flower flower;
 
   const DetailsScreen({super.key, required this.flower});
 
-  void _placeOrder(BuildContext context) async {
-    final auth = Provider.of<AuthProvider>(context, listen: false);
-    final flowerProvider = Provider.of<FlowerProvider>(context, listen: false);
-    final user = auth.user;
-
-    if (user == null) return;
-
-    final order = OrderModel(
-      orderId: '',
-      flowerId: flower.id,
-      userId: user.uid,
-      userName: user.displayName ?? 'User',
-      userEmail: user.email ?? '',
-      totalPrice: flower.price,
-      orderDate: DateTime.now(),
+  void _navigateToConfirmation(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => OrderConfirmationScreen(flower: flower),
+      ),
     );
-
-    await flowerProvider.placeOrder(order);
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Order placed successfully!")),
-      );
-      Navigator.pop(context);
-    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+    final bool showOrderButton = !authProvider.isAdmin;
+
     return Scaffold(
       appBar: AppBar(title: Text(flower.name)),
       body: SingleChildScrollView(
@@ -57,7 +42,6 @@ class DetailsScreen extends StatelessWidget {
                 ),
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -68,7 +52,7 @@ class DetailsScreen extends StatelessWidget {
                     children: [
                       Text(
                         "\$${flower.price.toStringAsFixed(2)}",
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.green,
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -103,50 +87,52 @@ class DetailsScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, -5),
-            ),
-          ],
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [Color(0xFF2E7D32), Color(0xFF1B5E20)],
-            ),
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xFF2E7D32).withOpacity(0.3),
-                blurRadius: 12,
-                offset: const Offset(0, 6),
+      bottomNavigationBar: showOrderButton
+          ? Container(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, -5),
+                  ),
+                ],
               ),
-            ],
-          ),
-          child: ElevatedButton(
-            onPressed: () => _placeOrder(context),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.transparent,
-              foregroundColor: Colors.white,
-              shadowColor: Colors.transparent,
-              padding: const EdgeInsets.symmetric(vertical: 18),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF2E7D32), Color(0xFF1B5E20)],
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF2E7D32).withOpacity(0.3),
+                      blurRadius: 12,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
+                ),
+                child: ElevatedButton(
+                  onPressed: () => _navigateToConfirmation(context),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    foregroundColor: Colors.white,
+                    shadowColor: Colors.transparent,
+                    padding: const EdgeInsets.symmetric(vertical: 18),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  child: const Text(
+                    "Place Order Now",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
               ),
-            ),
-            child: const Text(
-              "Place Order Now",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-      ),
+            )
+          : null,
     );
   }
 }

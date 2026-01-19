@@ -8,6 +8,7 @@ class OrderModel {
   final String userEmail;
   final double totalPrice;
   final DateTime orderDate;
+  final int quantity;
 
   OrderModel({
     required this.orderId,
@@ -17,6 +18,7 @@ class OrderModel {
     required this.userEmail,
     required this.totalPrice,
     required this.orderDate,
+    this.quantity = 1,
   });
 
   factory OrderModel.fromMap(Map<String, dynamic> data, String docId) {
@@ -28,6 +30,7 @@ class OrderModel {
       userEmail: data['userEmail'] ?? '',
       totalPrice: (data['totalPrice'] ?? 0.0).toDouble(),
       orderDate: (data['orderDate'] as Timestamp).toDate(),
+      quantity: data['quantity'] ?? 1,
     );
   }
 
@@ -39,6 +42,7 @@ class OrderModel {
       'userEmail': userEmail,
       'totalPrice': totalPrice,
       'orderDate': Timestamp.fromDate(orderDate),
+      'quantity': quantity,
     };
   }
 }

@@ -9,7 +9,11 @@ class ProfileTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = Provider.of<AuthProvider>(context);
     final userName = auth.name;
+    final userPhone = auth.phone;
+    final userCity = auth.city;
     String newName = userName;
+    String newPhone = userPhone;
+    String newCity = userCity;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F7F5),
@@ -139,6 +143,78 @@ class ProfileTab extends StatelessWidget {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text("Name Updated Successfully!"),
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      initialValue: userPhone,
+                      keyboardType: TextInputType.phone,
+                      onChanged: (val) => newPhone = val,
+                      decoration: InputDecoration(
+                        labelText: "Phone Number",
+                        labelStyle: const TextStyle(color: Colors.green),
+                        prefixIcon: const Icon(
+                          Icons.phone_outlined,
+                          color: Colors.green,
+                        ),
+                        filled: true,
+                        fillColor: Colors.green.withOpacity(0.02),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide.none,
+                        ),
+                        suffixIcon: IconButton(
+                          icon: const Icon(
+                            Icons.save_outlined,
+                            color: Colors.green,
+                          ),
+                          onPressed: () {
+                            auth.updatePhone(newPhone.trim());
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Phone Updated Successfully!"),
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      initialValue: userCity,
+                      textCapitalization: TextCapitalization.words,
+                      onChanged: (val) => newCity = val,
+                      decoration: InputDecoration(
+                        labelText: "City",
+                        labelStyle: const TextStyle(color: Colors.green),
+                        prefixIcon: const Icon(
+                          Icons.location_city_outlined,
+                          color: Colors.green,
+                        ),
+                        filled: true,
+                        fillColor: Colors.green.withOpacity(0.02),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide.none,
+                        ),
+                        suffixIcon: IconButton(
+                          icon: const Icon(
+                            Icons.save_outlined,
+                            color: Colors.green,
+                          ),
+                          onPressed: () {
+                            auth.updateCity(newCity.trim());
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("City Updated Successfully!"),
                                 behavior: SnackBarBehavior.floating,
                                 backgroundColor: Colors.green,
                               ),

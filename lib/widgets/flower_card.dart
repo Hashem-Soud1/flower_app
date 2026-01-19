@@ -72,7 +72,7 @@ class FlowerCard extends StatelessWidget {
                           style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF2E7D32),
+                            color: Color(0xFF1B5E20),
                           ),
                         ),
                         Text(
@@ -80,7 +80,7 @@ class FlowerCard extends StatelessWidget {
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Colors.green,
+                            color: Color(0xFF2E7D32),
                           ),
                         ),
                       ],
@@ -88,8 +88,8 @@ class FlowerCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       flower.category,
-                      style: TextStyle(
-                        color: Colors.grey[600],
+                      style: const TextStyle(
+                        color: Color(0xFF558B2F),
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),

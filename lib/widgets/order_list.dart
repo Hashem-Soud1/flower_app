@@ -34,55 +34,119 @@ class OrderList extends StatelessWidget {
           orElse: () => null,
         );
 
-        return ListTile(
-          contentPadding: EdgeInsets.zero,
-          leading: Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: Colors.grey[200],
-              image: flower != null && flower.imageUrl.isNotEmpty
-                  ? DecorationImage(
-                      image: CachedNetworkImageProvider(flower.imageUrl),
-                      fit: BoxFit.cover,
-                    )
-                  : null,
-            ),
-            child: flower == null
-                ? const Icon(Icons.shopping_bag, color: Colors.grey)
-                : null,
-          ),
-          title: Text(
-            isAdminView ? order.userName : (flower?.name ?? "Unknown Flower"),
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          subtitle: Text(
-            "${DateFormat.yMMMd().format(order.orderDate)} • \$${order.totalPrice.toStringAsFixed(2)}",
-            style: const TextStyle(color: Colors.grey),
-          ),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
+        return Container(
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 0),
+          child: Row(
             children: [
-              if (isAdminView)
-                Text(
-                  order.userEmail.split('@').first,
-                  style: const TextStyle(color: Colors.grey),
+              // Image
+              Container(
+                width: 70,
+                height: 70,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.grey[200],
+                  image: flower != null && flower.imageUrl.isNotEmpty
+                      ? DecorationImage(
+                          image: CachedNetworkImageProvider(flower.imageUrl),
+                          fit: BoxFit.cover,
+                        )
+                      : null,
                 ),
+                child: flower == null
+                    ? const Icon(Icons.shopping_bag, color: Colors.grey)
+                    : null,
+              ),
+              const SizedBox(width: 12),
+
+              // Details
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      isAdminView
+                          ? order.userName
+                          : (flower?.name ?? "Unknown Flower"),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      DateFormat.yMMMd().format(order.orderDate),
+                      style: const TextStyle(color: Colors.grey, fontSize: 13),
+                    ),
+                    if (isAdminView) ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        order.userEmail,
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                    const SizedBox(height: 8),
+                    // Price and Quantity Info
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.green[50],
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(color: Colors.green[200]!),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "الكمية: ${order.quantity}",
+                            style: TextStyle(
+                              color: Colors.green[700],
+                              fontWeight: FontWeight.w600,
+                              fontSize: 13,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Container(
+                            width: 1,
+                            height: 16,
+                            color: Colors.green[200],
+                          ),
+                          const SizedBox(width: 12),
+                          Text(
+                            "\$${order.totalPrice.toStringAsFixed(2)}",
+                            style: TextStyle(
+                              color: Colors.green[700],
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Delete Button
               IconButton(
                 icon: const Icon(Icons.delete_outline, color: Colors.red),
                 onPressed: () {
                   showDialog(
                     context: context,
                     builder: (ctx) => AlertDialog(
-                      title: const Text("Delete Order"),
+                      title: const Text("حذف الطلب"),
                       content: const Text(
-                        "Are you sure you want to delete this order?",
+                        "هل أنت متأكد من رغبتك في حذف هذا الطلب؟",
                       ),
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.pop(ctx),
-                          child: const Text("Cancel"),
+                          child: const Text("إلغاء"),
                         ),
                         TextButton(
                           onPressed: () async {
@@ -98,12 +162,12 @@ class OrderList extends StatelessWidget {
                             );
                             if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text("Order deleted")),
+                                const SnackBar(content: Text("تم حذف الطلب")),
                               );
                             }
                           },
                           child: const Text(
-                            "Delete",
+                            "حذف",
                             style: TextStyle(color: Colors.red),
                           ),
                         ),
