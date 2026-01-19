@@ -12,8 +12,8 @@ class HomeTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final flowerProvider = Provider.of<FlowerProvider>(context);
-    final isAdmin = Provider.of<AuthProvider>(context).isAdmin;
+    final flowerProvider = context.watch<FlowerProvider>();
+    final isAdmin = context.watch<AuthProvider>().isAdmin;
     final flowers = flowerProvider.flowers;
 
     return Scaffold(
@@ -34,10 +34,7 @@ class HomeTab extends StatelessWidget {
                   builder: (ctx) => const ManageFlowerDialog(),
                 ).then((value) {
                   if (value != null) {
-                    Provider.of<FlowerProvider>(
-                      context,
-                      listen: false,
-                    ).addFlower(value);
+                    context.read<FlowerProvider>().addFlower(value);
                   }
                 });
               },
@@ -76,18 +73,12 @@ class HomeTab extends StatelessWidget {
                             imageUrl: value.imageUrl,
                             category: value.category,
                           );
-                          Provider.of<FlowerProvider>(
-                            context,
-                            listen: false,
-                          ).updateFlower(updated);
+                          context.read<FlowerProvider>().updateFlower(updated);
                         }
                       });
                     },
                     onDelete: () {
-                      Provider.of<FlowerProvider>(
-                        context,
-                        listen: false,
-                      ).deleteFlower(flower.id);
+                      context.read<FlowerProvider>().deleteFlower(flower.id);
                     },
                   );
                 },

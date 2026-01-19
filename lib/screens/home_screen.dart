@@ -21,11 +21,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final auth = Provider.of<AuthProvider>(context, listen: false);
-      final flowerProvider = Provider.of<FlowerProvider>(
-        context,
-        listen: false,
-      );
+      final auth = context.read<AuthProvider>();
+      final flowerProvider = context.read<FlowerProvider>();
 
       flowerProvider.fetchFlowers();
       if (auth.user != null) {

@@ -21,7 +21,7 @@ class DetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
+    final authProvider = context.watch<AuthProvider>();
     final bool showOrderButton = !authProvider.isAdmin;
 
     return Scaffold(

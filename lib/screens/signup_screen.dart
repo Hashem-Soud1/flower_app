@@ -15,7 +15,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final _passwordController = TextEditingController();
 
   void _signup() async {
-    final auth = Provider.of<AuthProvider>(context, listen: false);
+    final auth = context.read<AuthProvider>();
     final error = await auth.signUp(
       _emailController.text.trim(),
       _passwordController.text.trim(),

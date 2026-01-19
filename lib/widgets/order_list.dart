@@ -21,7 +21,7 @@ class OrderList extends StatelessWidget {
       );
     }
 
-    final flowerProvider = Provider.of<FlowerProvider>(context, listen: false);
+    final flowerProvider = context.read<FlowerProvider>();
 
     return ListView.separated(
       padding: const EdgeInsets.all(16),

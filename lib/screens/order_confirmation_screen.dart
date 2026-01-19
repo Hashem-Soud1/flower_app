@@ -35,8 +35,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
   }
 
   void _confirmOrder() async {
-    final auth = Provider.of<AuthProvider>(context, listen: false);
-    final flowerProvider = Provider.of<FlowerProvider>(context, listen: false);
+    final auth = context.read<AuthProvider>();
+    final flowerProvider = context.read<FlowerProvider>();
     final user = auth.user;
 
     if (user == null) return;
@@ -71,9 +71,9 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
       }
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Error: $e")),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Error: $e")));
       }
     } finally {
       if (mounted) {
@@ -89,9 +89,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
     final totalPrice = widget.flower.price * _quantity;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("تأكيد الطلب"),
-      ),
+      appBar: AppBar(title: const Text("تأكيد الطلب")),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,8 +126,10 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
 
                   // Category
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.green[100],
                       borderRadius: BorderRadius.circular(4),
@@ -150,10 +150,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                     children: [
                       const Text(
                         "السعر للوحدة",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey,
-                        ),
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
                       ),
                       Text(
                         "\$${widget.flower.price.toStringAsFixed(2)}",
@@ -268,9 +265,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                             ),
                             Text(
                               "\$${widget.flower.price.toStringAsFixed(2)}",
-                              style: const TextStyle(
-                                fontSize: 16,
-                              ),
+                              style: const TextStyle(fontSize: 16),
                             ),
                           ],
                         ),
@@ -287,9 +282,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                             ),
                             Text(
                               "x $_quantity",
-                              style: const TextStyle(
-                                fontSize: 16,
-                              ),
+                              style: const TextStyle(fontSize: 16),
                             ),
                           ],
                         ),
@@ -372,10 +365,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                   )
                 : const Text(
                     "تأكيد الطلب",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
           ),
         ),

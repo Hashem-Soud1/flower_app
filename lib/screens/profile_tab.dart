@@ -7,7 +7,7 @@ class ProfileTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final auth = Provider.of<AuthProvider>(context);
+    final auth = context.watch<AuthProvider>();
     final userName = auth.name;
     final userPhone = auth.phone;
     final userCity = auth.city;

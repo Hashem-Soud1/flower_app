@@ -9,8 +9,8 @@ class OrdersTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final flowerProvider = Provider.of<FlowerProvider>(context);
-    final auth = Provider.of<AuthProvider>(context);
+    final flowerProvider = context.watch<FlowerProvider>();
+    final auth = context.watch<AuthProvider>();
     final isAdmin = auth.isAdmin;
 
     final orders = isAdmin
